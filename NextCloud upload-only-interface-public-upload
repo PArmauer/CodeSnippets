@@ -1,0 +1,17 @@
+$fileToUpload = "C:\myfolder\myFileToUpload.txt"
+
+#URL to upload-only-interface / public-upload
+$sourceUrl = "https://my.nextCloudUrl.tld/s/45hMyToken9438j"
+
+#Script
+$fileName = $fileToUpload.Split("\")[-1]
+$username = $sourceUrl.Split("/")[-1]
+$domain = $sourceUrl.Split("/")[2]
+$webdavUrl = "https://$domain/public.php/webdav/$fileName"
+$password = ""
+$headers = New-Object "System.Collections.Specialized.NameValueCollection"
+$headers.Add("X-Requested-With", "XMLHttpRequest")
+$wc = New-Object System.Net.WebClient
+$wc.Credentials = New-Object System.Net.NetworkCredential($username, $password)
+$wc.Headers.Add($headers)
+$wc.UploadFile($webdavUrl, "PUT", $fileToUpload)
